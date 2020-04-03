@@ -21,6 +21,9 @@ class cityWeather() :
         self.refreshTime = self.currentTime + datetime.timedelta(seconds=self.refreshInterval)
 
         self.refresh_weather()
+    
+    def __iter__(self):
+        return self
 
     #Checks the current weather of the given city with the openweathermap
     #   api. 
@@ -86,3 +89,11 @@ class cityWeather() :
             self.refresh_weather()
         else: 
             return
+    
+    #Runner function used in multithreading
+    def run():
+        pass
+    
+    #Generator function used to return weather values
+    def next(): 
+        pass

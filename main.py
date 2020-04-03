@@ -3,6 +3,7 @@ import subprocess
 import time
 import datetime
 import threading
+import concurrent.futures
 
 import weatherHandler
 import displayHandler
@@ -17,39 +18,27 @@ def main():
     display = displayHandler.SerialOLEDDisplay(128, 64)
     dt = datetime.datetime.now()
 
-    weatherMonitor = threading.Thread(group=None, name="weather monitor", \
-                                        target=weather_monitor, \
-                                        args=(weather, weather.refreshInterval)
-                                        )
-    datetimeMonitor = threading.Thread(group=None, name="datetime monitor", \
-                                        target=datetime_monitor, \
-                                        args=(dt,)\
-                                        )
-
-    displayMonitor = threading.Thread(group=None, name="display_monitor", \
-                                        target=display_monitor, \
-                                        kwargs={"display":display, "weather":weather, "dt":dt, \
-                                                "DATE_FORMAT":DATE_FORMAT, "TIME_FORMAT":TIME_FORMAT}\
-                                        )
-    
-    weatherMonitor.start()
-    datetimeMonitor.start()
-    displayMonitor.start()
-
-    while (True):
-        time.sleep(100000000)
+    weatherGenerator = ""
+    datetimeGeneartor = ""
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        weatherGenerator = executor.submit(initializer=weather_monitor, initargs=(weather, weather.refreshInterval))
+        datetimeGeneartor = executor.submit(initizlier=datetime_monitor, initargs=(dt,))
+        
+    time.sleep(0)
     
 
-def weather_monitor(weather, sleepTime):
+def weather_monitor(weather, sleepTime=20):
     while (True):
         weather.check_refresh()
 
+        yield weather
         time.sleep(sleepTime)
 
 def datetime_monitor(dt, sleepTime=1):
     while (True):
         dt = datetime.datetime.now()
         
+        yield dt
         time.sleep(sleepTime)
 
 def display_monitor(display, weather, dt, DATE_FORMAT, TIME_FORMAT, sleepTime=1):
