@@ -2,6 +2,7 @@
 import subprocess
 import time
 import datetime
+import threading
 
 import weatherHandler
 import displayHandler
@@ -47,7 +48,16 @@ def main():
         nextAvailable = display.add_string(x, y, currentHumidity, fontSize=10)
         display.display_everything()
 
-        time.sleep(0.1)
- 
+        time.sleep(0.5)
+
+def weather_monitor(weather):
+    pass
+
+def datetime_monitor(dt):
+    pass
+
+def display_monitor(display, weather, dt):
+    pass
+
 if (__name__ == "__main__"):
     main()
