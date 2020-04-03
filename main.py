@@ -47,7 +47,14 @@ def main():
         nextAvailable = display.add_string(x, y, currentHumidity, fontSize=10)
         display.display_everything()
 
-        time.sleep(0.1)
- 
+        time.sleep(0.5)
+
+def weather_monitor():
+    pass
+
+def datetime_monitor():
+    pass
+
+
 if (__name__ == "__main__"):
     main()
