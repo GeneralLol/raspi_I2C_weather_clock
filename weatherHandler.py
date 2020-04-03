@@ -32,28 +32,14 @@ class cityWeather() :
         weatherJson = self.query("weather", self.cityID)
 
         self.weather = weatherJson["weather"][0]["main"]
-        self.temp    = self.conv_temp(weatherJson["main"]["temp"])
-        self.humidity= weatherJson["main"]["humidity"]
-    #Three getters for respective variables. 
-    def get_current_weather(self):
-        self.check_refresh()
-        return self.weather
-    
-    def get_current_temperature(self):
-        self.check_refresh()
-        returnStr = "%2.f" % self.temp
+        self.temp    = "%2.f" % self.conv_temp(weatherJson["main"]["temp"])
         if (self.tempUnit == "F"):
-            returnStr = returnStr + "°F"
+            self.temp = self.temp + "°F"
         elif (self.tempUnit == "C"): 
-            returnStr = returnStr + "°C"
+            self.temp = self.temp + "°C"
         elif (self.tempUnit == "K"):
-            returnStr = returnStr + "K"
-        return returnStr
-    
-    def get_current_humidity(self):
-        self.check_refresh()
-        return str(self.humidity) + "%"
-
+            self.temp = self.temp + "K"
+        self.humidity= "%2.f%%" % weatherJson["main"]["humidity"]
 
     #Acquires a five-day forecast of the given city with the openweathermap
     #   api. 

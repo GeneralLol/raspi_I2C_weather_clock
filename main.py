@@ -15,49 +15,69 @@ def main():
 
     weather = weatherHandler.cityWeather(refreshInterval=5, cityID="5083221"); 
     display = displayHandler.SerialOLEDDisplay(128, 64)
+    dt = datetime.datetime.now()
+
+    weatherMonitor = threading.Thread(group=None, name="weather monitor", \
+                                        target=weather_monitor, \
+                                        args=(weather, weather.refreshInterval)
+                                        )
+    datetimeMonitor = threading.Thread(group=None, name="datetime monitor", \
+                                        target=datetime_monitor, \
+                                        args=(dt,)\
+                                        )
+
+    displayMonitor = threading.Thread(group=None, name="display_monitor", \
+                                        target=display_monitor, \
+                                        kwargs={"display":display, "weather":weather, "dt":dt, \
+                                                "DATE_FORMAT":DATE_FORMAT, "TIME_FORMAT":TIME_FORMAT}\
+                                        )
+    
+    weatherMonitor.start()
+    datetimeMonitor.start()
+    displayMonitor.start()
 
     while (True):
-        currentDatetime    = datetime.datetime.now()
-        currentDateStr = currentDatetime.date().strftime(DATE_FORMAT)
-        currentTimeStr = currentDatetime.time().strftime(TIME_FORMAT)
-        currentWeather     = weather.get_current_weather()
-        currentTemperature = weather.get_current_temperature()
-        currentHumidity    = weather.get_current_humidity()
+        time.sleep(100000000)
+    
 
-        #Print everything out for debug purposes
-        debug_str = "{}\n{}\n{}\n{}\n{}\n\n".format(\
-                                            currentDateStr, \
-                                            currentTimeStr, \
-                                            currentWeather, \
-                                            currentTemperature, \
-                                            currentHumidity)
-        print(debug_str)
+def weather_monitor(weather, sleepTime):
+    while (True):
+        weather.check_refresh()
+
+        time.sleep(sleepTime)
+
+def datetime_monitor(dt, sleepTime=1):
+    while (True):
+        dt = datetime.datetime.now()
+        
+        time.sleep(sleepTime)
+
+def display_monitor(display, weather, dt, DATE_FORMAT, TIME_FORMAT, sleepTime=1):
+    while (True): 
+        #Take all data out of objects
+        dateStr = dt.date().strftime(DATE_FORMAT)
+        timeStr = dt.time().strftime(TIME_FORMAT)
+
+        wthr = weather.weather
+        temp = weather.temp
+        humidity = weather.humidity
 
         #Draw things onto the display (basically hard-coding)
         display.clear_buffer()
         (x, y) = (0, 0)
-        nextAvailable = display.add_string(x, y, currentDateStr, fontSize=13)
+        nextAvailable = display.add_string(x, y, dateStr, fontSize=13)
         (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, currentTimeStr, fontSize=17)
+        nextAvailable = display.add_string(x, y, timeStr, fontSize=17)
         (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, currentWeather, fontSize=25)
+        nextAvailable = display.add_string(x, y, wthr, fontSize=25)
         (x, y) = nextAvailable[1]
         x += 10
-        nextAvailable = display.add_string(x, y, currentTemperature, fontSize=15)
+        nextAvailable = display.add_string(x, y, temp, fontSize=15)
         (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, currentHumidity, fontSize=10)
+        nextAvailable = display.add_string(x, y, humidity, fontSize=10)
         display.display_everything()
 
-        time.sleep(0.5)
-
-def weather_monitor(weather):
-    pass
-
-def datetime_monitor(dt):
-    pass
-
-def display_monitor(display, weather, dt):
-    pass
+        time.sleep(sleepTime)
 
 if (__name__ == "__main__"):
     main()
