@@ -32,6 +32,13 @@ def main():
                                             currentHumidity)
         print(debug_str)
 
+        #If the time is between 7pm and 8am, dim the display. 
+        if (currentDatetime.time() < datetime.time(hour=8) or \
+            currentDatetime.time() > datetime.time(hour=19)):
+            display.config_brightness(0)
+        else:
+            display.config_brightness(255)
+
         #Draw things onto the display (basically hard-coding)
         display.clear_buffer()
         (x, y) = (0, 0)

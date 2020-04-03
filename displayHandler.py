@@ -41,3 +41,8 @@ class SerialOLEDDisplay:
     def display_everything(self):
         self.display.image(self.buffer)
         self.display.show()
+
+    #Changes the brightness of the OLED display. 
+    def config_brightness(self, brightness):
+        self.display.write_cmd(0x81)
+        self.display.write_cmd(brightness)
