@@ -41,11 +41,18 @@ class cityWeather() :
     
     def get_current_temperature(self):
         self.check_refresh()
-        return self.temp
+        returnStr = "%2.f" % self.temp
+        if (self.tempUnit == "F"):
+            returnStr = returnStr + "°F"
+        elif (self.tempUnit == "C"): 
+            returnStr = returnStr + "°C"
+        elif (self.tempUnit == "K"):
+            returnStr = returnStr + "K"
+        return returnStr
     
     def get_current_humidity(self):
         self.check_refresh()
-        return self.humidity
+        return str(self.humidity) + "%"
 
 
     #Acquires a five-day forecast of the given city with the openweathermap

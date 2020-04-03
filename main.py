@@ -4,24 +4,50 @@ import time
 import datetime
 
 import weatherHandler
-import timeHandler
 import displayHandler
 
 import RPi.GPIO as GPIO
 
 def main():
-    WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    DATE_FORMAT = '%Y-%m-%d %a \n%H:%M:%S \n'
-    
-    weather = weatherHandler.cityWeather(refreshInterval=3, cityID="5083221"); 
+    DATE_FORMAT = '%Y-%m-%d %a'
+    TIME_FORMAT = '%H:%M:%S '
+
+    weather = weatherHandler.cityWeather(refreshInterval=5, cityID="5083221"); 
     display = displayHandler.SerialOLEDDisplay(128, 64)
 
-    for i in range(10):
-        dt = datetime.datetime.now()
+    while (True):
+        currentDatetime    = datetime.datetime.now()
+        currentDateStr = currentDatetime.date().strftime(DATE_FORMAT)
+        currentTimeStr = currentDatetime.time().strftime(TIME_FORMAT)
         currentWeather     = weather.get_current_weather()
         currentTemperature = weather.get_current_temperature()
         currentHumidity    = weather.get_current_humidity()
-        display.display_string(0, 0, currentWeather, fontSize=20)
+
+        #Print everything out for debug purposes
+        debug_str = "{}\n{}\n{}\n{}\n{}\n\n".format(\
+                                            currentDateStr, \
+                                            currentTimeStr, \
+                                            currentWeather, \
+                                            currentTemperature, \
+                                            currentHumidity)
+        print(debug_str)
+
+        #Draw things onto the display (basically hard-coding)
+        display.clear_buffer()
+        (x, y) = (0, 0)
+        nextAvailable = display.add_string(x, y, currentDateStr, fontSize=13)
+        (x, y) = nextAvailable[3]
+        nextAvailable = display.add_string(x, y, currentTimeStr, fontSize=17)
+        (x, y) = nextAvailable[3]
+        nextAvailable = display.add_string(x, y, currentWeather, fontSize=25)
+        (x, y) = nextAvailable[1]
+        x += 10
+        nextAvailable = display.add_string(x, y, currentTemperature, fontSize=15)
+        (x, y) = nextAvailable[3]
+        nextAvailable = display.add_string(x, y, currentHumidity, fontSize=10)
+        display.display_everything()
+
+        time.sleep(0.1)
  
 if (__name__ == "__main__"):
     main()
