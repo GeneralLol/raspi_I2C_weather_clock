@@ -34,7 +34,7 @@ class SerialOLEDDisplay:
         lineHeight = textHeight
         stringsToDisplay = []
         #Check if the text will go out of bound. 
-        #If x goes out of bound, reduce font size, split the string into two and place into two lines. 
+        #If x goes out of bound, reduce font size, half the size of the font, split the string into two and place into two lines. 
         #TODO: There is a mathemetical method to make a rectangle into a less long rectangle. 
         #   Implement that when there is time. 
         if (startx + textWidth > maxX):
