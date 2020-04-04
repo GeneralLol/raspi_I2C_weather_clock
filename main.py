@@ -39,20 +39,8 @@ def main():
         else:
             display.config_brightness(255)
 
-        #Draw things onto the display (basically hard-coding)
-        display.clear_buffer()
-        (x, y) = (0, 0)
-        nextAvailable = display.add_string(x, y, 128, 13, currentDateStr, fontSize=13)
-        (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, 128, 30, currentTimeStr, fontSize=17)
-        (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, 90, 64, currentWeather, fontSize=25)
-        (x, y) = nextAvailable[1]
-        x = 90
-        nextAvailable = display.add_string(x, y, 128, 47, currentTemperature, fontSize=15)
-        (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, 128, 64, currentHumidity, fontSize=10)
-        display.display_everything()
+        draw_on_display(display, currentDateStr, currentTimeStr, \
+                        currentWeather, currentTemperature, currentHumidity)
 
         time.sleep(0.5)
 
@@ -62,6 +50,21 @@ def weather_monitor():
 def datetime_monitor():
     pass
 
+def draw_on_display(display, dateStr, timeStr, weatherStr, tempStr, humidityStr):
+    #Draw things onto the display (basically hard-coding)
+    display.clear_buffer()
+    (x, y) = (0, 0)
+    nextAvailable = display.add_string(x, y, 128, 13, dateStr, fontSize=13)
+    (x, y) = nextAvailable[3]
+    nextAvailable = display.add_string(x, y, 128, 30, timeStr, fontSize=17)
+    (x, y) = nextAvailable[3]
+    nextAvailable = display.add_string(x, y, 90, 64, weatherStr, fontSize=25)
+    (x, y) = nextAvailable[1]
+    x = 90
+    nextAvailable = display.add_string(x, y, 128, 47, tempStr, fontSize=15)
+    (x, y) = nextAvailable[3]
+    nextAvailable = display.add_string(x, y, 128, 64, humidityStr, fontSize=10)
+    display.display_everything()
 
 if (__name__ == "__main__"):
     main()
