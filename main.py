@@ -13,7 +13,7 @@ def main():
     DATE_FORMAT = '%Y-%m-%d %a'
     TIME_FORMAT = '%H:%M:%S '
 
-    weather = weatherHandler.cityWeather(refreshInterval=5, cityID="5083221"); 
+    weather = weatherHandler.cityWeather(refreshInterval=60, cityID="5083221"); 
     display = displayHandler.SerialOLEDDisplay(128, 64)
     dt = datetime.datetime.now()
 
@@ -61,22 +61,39 @@ def display_monitor(display, weather, dt, DATE_FORMAT, TIME_FORMAT, sleepTime=1)
         temp = weather.temp
         humidity = weather.humidity
 
-        #Draw things onto the display (basically hard-coding)
-        display.clear_buffer()
-        (x, y) = (0, 0)
-        nextAvailable = display.add_string(x, y, dateStr, fontSize=13)
-        (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, timeStr, fontSize=17)
-        (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, wthr, fontSize=25)
-        (x, y) = nextAvailable[1]
-        x += 10
-        nextAvailable = display.add_string(x, y, temp, fontSize=15)
-        (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, humidity, fontSize=10)
-        display.display_everything()
+        #If the time is between 7pm and 8am, dim the display. 
+        if (currentDatetime.time() < datetime.time(hour=8) or \
+            currentDatetime.time() > datetime.time(hour=19)):
+            display.config_brightness(0)
+        else:
+            display.config_brightness(255)
 
-        time.sleep(sleepTime)
+        draw_on_display(display, currentDateStr, currentTimeStr, \
+                        currentWeather, currentTemperature, currentHumidity)
+
+        time.sleep(0.5)
+
+def weather_monitor():
+    pass
+
+def datetime_monitor():
+    pass
+
+def draw_on_display(display, dateStr, timeStr, weatherStr, tempStr, humidityStr):
+    #Draw things onto the display (basically hard-coding)
+    display.clear_buffer()
+    (x, y) = (0, 0)
+    nextAvailable = display.add_string(x, y, 128, 13, dateStr, fontSize=13)
+    (x, y) = nextAvailable[3]
+    nextAvailable = display.add_string(x, y, 128, 30, timeStr, fontSize=17)
+    (x, y) = nextAvailable[3]
+    nextAvailable = display.add_string(x, y, 90, 64, weatherStr, fontSize=25)
+    (x, y) = nextAvailable[1]
+    x = 90
+    nextAvailable = display.add_string(x, y, 128, 47, tempStr, fontSize=15)
+    (x, y) = nextAvailable[3]
+    nextAvailable = display.add_string(x, y, 128, 64, humidityStr, fontSize=10)
+    display.display_everything()
 
 if (__name__ == "__main__"):
     main()
