@@ -38,7 +38,7 @@ class SerialOLEDDisplay:
         #TODO: There is a mathemetical method to make a rectangle into a less long rectangle. 
         #   Implement that when there is time. 
         if (startx + textWidth > maxX):
-            font = ImageFont.truetype(fontPath, size=int(fontSize))
+            font = ImageFont.truetype(fontPath, size=int(fontSize*0.5))
             stringsToDisplay.append(string[:int(len(string)/2)])
             stringsToDisplay.append(string[int(len(string)/2):])
             #Check if a word was split. If there is, add a hyphen. 
@@ -46,6 +46,8 @@ class SerialOLEDDisplay:
                 stringsToDisplay[0] = stringsToDisplay[0] + "-"
             (textWidth, lineHeight) = font.getsize(stringsToDisplay[0])
             textHeight = lineHeight*2    #To account for the two lines
+        else: 
+            stringsToDisplay.append(string)
         #If y goes out of bound, do nothing. 
 
         #Draw a black rectangle as a backgound to cover up whatever
