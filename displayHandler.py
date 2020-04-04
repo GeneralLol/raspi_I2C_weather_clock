@@ -52,10 +52,10 @@ class SerialOLEDDisplay:
         #   that might overlap. 
         self.draw.rectangle((startx, starty, startx+textWidth, starty+textHeight), fill=0)
         #Display the text
-        lineCounter = 0
-        for y in range(starty, maxY, lineHeight): 
-            self.draw.text((startx, y), stringsToDisplay[lineCounter], font=font, fill=128)
-            lineCounter += 1
+        y = starty
+        for line in stringsToDisplay: 
+            self.draw.text((startx, y), line, font=font, fill=128)
+            y += lineHeight
         
         return [(startx, starty), (startx+textWidth, starty), \
                 (startx+textWidth, starty+textHeight), (startx, starty+textHeight)]
