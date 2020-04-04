@@ -19,19 +19,46 @@ class SerialOLEDDisplay:
         self.display_everything() 
 
     #Adds a string to the buffer to the specified coordinates. 
+    #x and y specify which coordinates to start inserting the text at. 
+    #maxX and maxY specify the boundaries of the text box. Default to 
+    #   arbitrary large values. 
     #Returns: A list of tuples containing the coordinates of the four 
     #   vertecies in clockwise direction starting from the one on the 
     #   top left. 
-    def add_string (self, x, y, string, fontSize=10, fontPath="./fonts/truetype/dejavu/DejaVuSans.ttf"):
+    def add_string (self, startx=0, starty=0, maxX=1000, maxY=1000, string="", \
+                    fontSize=10, fontPath="./fonts/truetype/dejavu/DejaVuSans.ttf"):
+
         font   = ImageFont.truetype(fontPath, size=fontSize)
 
-        (text_width, text_height) = font.getsize(string)
+        (textWidth, textHeight) = font.getsize(string)
+        lineHeight = textHeight
+        stringsToDisplay = []
+        #Check if the text will go out of bound. 
+        #If x goes out of bound, reduce font size, split the string into two and place into two lines. 
+        #TODO: There is a mathemetical method to make a rectangle into a less long rectangle. 
+        #   Implement that when there is time. 
+        if (startx + textWidth > maxX):
+            font = ImageFont.truetype(fontPath, size=int(fontSize))
+            stringsToDisplay.append(string[:int(len(string)/2)])
+            stringsToDisplay.append(string[int(len(string)/2):])
+            #Check if a word was split. If there is, add a hyphen. 
+            if (stringsToDisplay[0][1:] != " " and stringsToDisplay[1][:1] != " "):
+                stringsToDisplay[0] = stringsToDisplay[0] + "-"
+            (textWidth, lineHeight) = font.getsize(stringsToDisplay[0])
+            textHeight = lineHeight*2    #To account for the two lines
+        #If y goes out of bound, do nothing. 
+
         #Draw a black rectangle as a backgound to cover up whatever
         #   that might overlap. 
-        self.draw.rectangle((x, y, x+text_width, y+text_height), fill=0)
-        self.draw.text((x, y), string, font=font, fill=128)
+        self.draw.rectangle((startx, starty, startx+textWidth, starty+textHeight), fill=0)
+        #Display the text
+        lineCounter = 0
+        for y in range(starty, maxY, lineHeight): 
+            self.draw.text((startx, y), stringsToDisplay[lineCounter], font=font, fill=128)
+            lineCounter += 1
         
-        return [(x, y), (x+text_width, y), (x+text_width, y+text_height), (x, y+text_height)]
+        return [(startx, starty), (startx+textWidth, starty), \
+                (startx+textWidth, starty+textHeight), (startx, starty+textHeight)]
 
     def clear_buffer(self):
         #Draws a black rectangle over everything. 

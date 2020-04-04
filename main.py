@@ -42,16 +42,18 @@ def main():
         #Draw things onto the display (basically hard-coding)
         display.clear_buffer()
         (x, y) = (0, 0)
-        nextAvailable = display.add_string(x, y, currentDateStr, fontSize=13)
+        nextAvailable = display.add_string(x, y, 128, 13, currentDateStr, fontSize=13)
         (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, currentTimeStr, fontSize=17)
+        nextAvailable = display.add_string(x, y, 128, 30, currentTimeStr, fontSize=17)
         (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, currentWeather, fontSize=25)
+        nextAvailable = display.add_string(x, y, 72, 64, currentWeather, fontSize=25)
         (x, y) = nextAvailable[1]
         x += 10
-        nextAvailable = display.add_string(x, y, currentTemperature, fontSize=15)
+        #The temperature and humidity should be right-aligned. 
+        
+        nextAvailable = display.add_string(x, y, 128, 47, currentTemperature, fontSize=15)
         (x, y) = nextAvailable[3]
-        nextAvailable = display.add_string(x, y, currentHumidity, fontSize=10)
+        nextAvailable = display.add_string(x, y, 128, 64, currentHumidity, fontSize=10)
         display.display_everything()
 
         time.sleep(0.5)
