@@ -49,8 +49,7 @@ def main():
         nextAvailable = display.add_string(x, y, 72, 64, currentWeather, fontSize=25)
         (x, y) = nextAvailable[1]
         x += 10
-        #The temperature and humidity should be right-aligned. 
-        
+        #TODO: The temperature and humidity should be right-aligned. 
         nextAvailable = display.add_string(x, y, 128, 47, currentTemperature, fontSize=15)
         (x, y) = nextAvailable[3]
         nextAvailable = display.add_string(x, y, 128, 64, currentHumidity, fontSize=10)
