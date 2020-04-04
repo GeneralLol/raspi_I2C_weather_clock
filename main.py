@@ -38,7 +38,9 @@ def main():
 
     time.sleep(0)
     
-
+#TODO: Migrate all the monitor functions into the respective classes
+#   and make the classes themselves threads. 
+#   The main thread will be used purely for timing. 
 def weather_monitor(weather, sleepTime=20):
     while (True):
         weather.check_refresh()

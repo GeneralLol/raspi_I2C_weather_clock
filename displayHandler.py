@@ -4,7 +4,7 @@ import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 
-class SerialOLEDDisplay: 
+class SerialOLEDDisplay(threading.Thread): 
     def __init__(self, WIDTH, HEIGHT): 
         i2c = busio.I2C(SCL, SDA)
         self.width  = WIDTH

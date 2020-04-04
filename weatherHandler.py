@@ -1,10 +1,11 @@
 import json
 import datetime
+import threading
 
 from urllib.request import *
 from urllib.error   import *
 
-class cityWeather() : 
+class cityWeather(threading.Thread) : 
 
     def __init__(self, refreshInterval=60, \
                  cityID="", city="", country="", tempUnit="C"): 
