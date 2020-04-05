@@ -16,6 +16,10 @@ def main():
     display = displayHandler.SerialOLEDDisplay(128, 64)
 
     while (True):
+        #cycleStart is used to calculate the execution time of one cycle
+        #   and adjust the sleep time. 
+        cycleStart = time.clock_gettime(time.CLOCK_MONOTONIC)
+
         currentDatetime    = datetime.datetime.now()
         currentDateStr = currentDatetime.date().strftime(DATE_FORMAT)
         currentTimeStr = currentDatetime.time().strftime(TIME_FORMAT)
@@ -24,7 +28,8 @@ def main():
         currentHumidity    = weather.get_current_humidity()
 
         #Print everything out for debug purposes
-        debug_str = "{}\n{}\n{}\n{}\n{}\n".format(\
+        debug_str = "{}\n{}\n{}\n{}\n{}\n{}\n".format(\
+                                            cycleStart,\
                                             currentDateStr, \
                                             currentTimeStr, \
                                             currentWeather, \
@@ -43,7 +48,10 @@ def main():
         draw_on_display(display, currentDateStr, currentTimeStr, \
                         currentWeather, currentTemperature, currentHumidity)
 
-        time.sleep(0.5)
+        cycleEnd = time.clock_gettime(time.CLOCK_MONOTONIC)
+        cycleDelta = cycleEnd - cycleStart
+
+        time.sleep(1-cycleDelta)
 
 def weather_monitor():
     pass

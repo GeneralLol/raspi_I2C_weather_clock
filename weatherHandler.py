@@ -1,5 +1,6 @@
 import json
 import datetime
+import threading
 
 from urllib.request import *
 from urllib.error   import *
@@ -99,9 +100,11 @@ class cityWeather() :
     
     #Checks to see if it is time to refresh the weather 
     #information, and refreshes the information when needed. 
+    #Refreshes in a new thread so that it does not hold the program for too long. 
     def check_refresh(self):
         self.currentTime = datetime.datetime.now()
         if (self.refreshTime < self.currentTime):
-            self.refresh_weather()
+            refreshThread = threading.Thread(target=self.refresh_weather)
+            refreshThread.start()
         else: 
             return
