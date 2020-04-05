@@ -24,12 +24,13 @@ def main():
         currentHumidity    = weather.get_current_humidity()
 
         #Print everything out for debug purposes
-        debug_str = "{}\n{}\n{}\n{}\n{}\n\n".format(\
+        debug_str = "{}\n{}\n{}\n{}\n{}\n".format(\
                                             currentDateStr, \
                                             currentTimeStr, \
                                             currentWeather, \
                                             currentTemperature, \
                                             currentHumidity)
+        print("acquired values:")
         print(debug_str)
 
         #If the time is between 7pm and 8am, dim the display. 

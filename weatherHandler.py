@@ -29,7 +29,12 @@ class cityWeather() :
     #tempUnit: the desired unit for temperature. 
     #Currently only works with city id. 
     def refresh_weather(self):
-        weatherJson = self.query("weather", self.cityID)
+        #If something is wrong on the remote end, stop the refresh
+        #   process. (weather, temp and humidity retain their old values)
+        try: 
+            weatherJson = self.query("weather", self.cityID)
+        except URLError: 
+            return
 
         self.weather = weatherJson["weather"][0]["main"]
         self.temp    = self.conv_temp(weatherJson["main"]["temp"])
