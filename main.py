@@ -15,6 +15,8 @@ def main():
     weather = weatherHandler.cityWeather(refreshInterval=10, cityID="5083221"); 
     display = displayHandler.SerialOLEDDisplay(128, 64)
 
+    refreshtime = 1
+
     while (True):
         #cycleStart is used to calculate the execution time of one cycle
         #   and adjust the sleep time. 
@@ -51,7 +53,10 @@ def main():
         cycleEnd = time.clock_gettime(time.CLOCK_MONOTONIC)
         cycleDelta = cycleEnd - cycleStart
 
-        time.sleep(1-cycleDelta)
+        sleepTime = refreshTime - cycleDelta
+        if (sleepTime < 0):
+            sleepTime = 0.000000001
+        time.sleep(sleepTime)
 
 def weather_monitor():
     pass
