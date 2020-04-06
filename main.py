@@ -15,7 +15,7 @@ def main():
     weather = weatherHandler.cityWeather(refreshInterval=10, cityID="5083221"); 
     display = displayHandler.SerialOLEDDisplay(128, 64)
 
-    refreshtime = 1
+    refreshTime = 1
 
     while (True):
         #cycleStart is used to calculate the execution time of one cycle
