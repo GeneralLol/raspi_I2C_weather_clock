@@ -17,6 +17,10 @@ class cityWeather() :
         self.country  = country
         self.tempUnit = tempUnit
 
+        self.weather  = "Not initialized"
+        self.temp     = 0
+        self.humidity = 0
+
         self.currentTime = datetime.datetime.now()
         self.refreshInterval = refreshInterval
         self.refreshTime = self.currentTime + datetime.timedelta(seconds=self.refreshInterval)
