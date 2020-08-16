@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/python3.8", 
+                "/usr/include/glib-2.0",
+                "/usr/lib64/glib-2.0/include", 
+                "/usr/include/libgeoclue-2.0",
+                "/usr/lib64/glib-2.0/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/lib64/ccache/clang",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

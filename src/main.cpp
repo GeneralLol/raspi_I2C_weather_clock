@@ -1,5 +1,3 @@
-#define PY_SSIZE_T_CLEAN
-
 #include <cstdlib>
 #include <iostream>
 #include <fstream> 
@@ -25,11 +23,10 @@ int main(int argc, char** argv){
      * Command line options: 
      * -i desktopID
      * -d cache file directory
-     * -r refresh time, in seconds
      */
     runDir = argv[0];
     int c;  
-    while ((c=getopt(argc, argv, "i:d:r:"))!=-1){
+    while ((c=getopt(argc, argv, "i:d:"))!=-1){
         switch (c){
         case 'i': 
             desktopID = optarg; 
@@ -43,8 +40,6 @@ int main(int argc, char** argv){
         case '?': 
             if (optopt=='d'){
                 std::cout << "-d requires an argument for cache directory." << std::endl; 
-            }else if (optopt=='r'){
-                std::cout << "-r requires an argument for refresh interval." << std::endl;
             }else if (isprint(optopt)){ 
                 std::cout << "unknown option -" << c << std::endl;
             }
@@ -52,9 +47,6 @@ int main(int argc, char** argv){
             return 1; 
         }
     }
-    std::cout << desktopID << std::endl; 
-    std::cout << cacheDir << std::endl; 
-    std::cout << refreshInterval << std::endl; 
     
 
     //Hardcoded here so that it cannot be changed at runtime
