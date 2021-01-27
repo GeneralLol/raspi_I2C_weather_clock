@@ -44,6 +44,8 @@ class cityWeather() :
         self.weather = weatherJson["weather"][0]["main"]
         self.temp    = self.conv_temp(weatherJson["main"]["temp"])
         self.humidity= weatherJson["main"]["humidity"]
+        return
+
     #Three getters for respective variables. 
     def get_current_weather(self):
         self.check_refresh()

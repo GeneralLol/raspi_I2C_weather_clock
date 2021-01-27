@@ -12,7 +12,7 @@ def main():
     DATE_FORMAT = '%Y-%m-%d %a'
     TIME_FORMAT = '%H:%M:%S '
 
-    weather = weatherHandler.cityWeather(refreshInterval=10, cityID="5083221"); 
+    weather = weatherHandler.cityWeather(refreshInterval=10, cityID="4930956"); 
     display = displayHandler.SerialOLEDDisplay(128, 64)
 
     refreshTime = 1
